@@ -1,0 +1,91 @@
+from collections import deque
+
+def BFS(a, b, target):
+	
+	m = {}
+	isSolvable = False
+	path = []
+	
+	q = deque()
+	
+	# Initialing with initial state
+	q.append((0, 0))
+
+	while (len(q) > 0):
+		
+		# Current state
+		u = q.popleft()
+
+		# If this state is already visited
+		if ((u[0], u[1]) in m):
+			continue
+
+		# Doesn't met jug constraints
+		if ((u[0] > a or u[1] > b or
+			u[0] < 0 or u[1] < 0)):
+			continue
+
+		# Filling the vector for constructing the solution path
+		path.append([u[0], u[1]])
+
+		# Marking current state as visited
+		m[(u[0], u[1])] = 1
+
+		# If we reach solution state, put ans=1
+		if (u[0] == target or u[1] == target):
+			isSolvable = True
+			
+			if (u[0] == target) and (u[1] != 0):
+				# Fill final state
+				path.append([u[0], 0])
+			elif (u[0] != 0):
+				# Fill final state
+				path.append([0, u[1]])
+
+			# Print the solution path
+			sz = len(path)
+			for i in range(sz):
+				print("(", path[i][0], ",",
+						path[i][1], ")")
+			break
+
+		# If we have not reached final state
+		# start developing intermediate  states
+		q.append([u[0], b]) # Fill Jug2
+		q.append([a, u[1]]) # Fill Jug1
+
+		for ap in range(max(a, b) + 1):
+
+			# Pour amount ap from Jug2 to Jug1
+			c = u[0] + ap
+			d = u[1] - ap
+
+			# Check if this state is possible or not
+			if (c == a or (d == 0 and d >= 0)):
+				q.append([c, d])
+
+			# Pour amount ap from Jug 1 to Jug2
+			c = u[0] - ap
+			d = u[1] + ap
+
+			# Check if this state is possible or not
+			if ((c == 0 and c >= 0) or d == b):
+				q.append([c, d])
+		
+		# Empty Jug2
+		q.append([a, 0])
+		
+		# Empty Jug1
+		q.append([0, b])
+
+	# No, solution exists if ans=0
+	if (not isSolvable):
+		print ("No solution")
+
+
+	
+Jug1, Jug2, target = 4, 3, 2
+print("Path from initial state "
+	"to solution state ::")
+
+BFS(Jug1, Jug2, target)
