@@ -83,9 +83,12 @@ def BFS(a, b, target):
 		print ("No solution")
 
 
-	
-Jug1, Jug2, target = 4, 3, 2
-print("Path from initial state "
-	"to solution state ::")
+def main():	
+	Jug1, Jug2, target = 4, 3, 2
+	print("Path from initial state "
+		"to solution state ::")
 
-BFS(Jug1, Jug2, target)
+	BFS(Jug1, Jug2, target)
+
+if __name__ == "__main__":
+	main()
